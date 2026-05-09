@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ebebeb;
+  --foreground: #1a1a1a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /**
+   * Tarjetas Servicios / Galería: mismo criterio.
+   * Móvil: alineado a la izquierda, sin guiones forzados.
+   * sm+: justificación controlada + hyphens + interlineado amplio.
+   */
+  .text-card-body {
+    text-wrap: pretty;
+    hyphens: manual;
+    text-align: left;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    letter-spacing: 0.025em;
+    color: rgb(26 26 26 / 0.7);
+  }
+
+  @media (min-width: 640px) {
+    .text-card-body {
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      text-align: justify;
+      line-height: 2;
+    }
+  }
+
+  /**
+   * Párrafos de cuerpo cortos (sin bloque largo): pretty, sin justificar.
+   */
+  .text-body-pretty {
+    text-wrap: pretty;
+    text-align: left;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 640px) {
+    .text-body-pretty {
+      line-height: 1.75;
+    }
+  }
+
+  /**
+   * Nuestra historia, misión, visión (RevealLines).
+   */
+  .text-long-prose-line {
+    text-wrap: pretty;
+    hyphens: manual;
+    text-align: left;
+    font-size: 0.875rem;
+    line-height: 1.625;
+  }
+
+  @media (min-width: 640px) {
+    .text-long-prose-line {
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      text-align: justify;
+      line-height: 2;
+    }
+  }
+
+  /**
+   * Misión / Visión: guiones, pretty, justificado refinado (inter-word → inter-character).
+   * leading-relaxed (~1.625 / 1.75) para suavizar el bloque justificado.
+   */
+  .text-mision-vision {
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-align: left;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    letter-spacing: 0.01em;
+    color: rgb(26 26 26 / 0.7);
+  }
+
+  @media (min-width: 640px) {
+    .text-mision-vision {
+      text-align: justify;
+      line-height: 1.75;
+      text-justify: inter-word;
+    }
+  }
+
+  @supports (text-justify: inter-character) {
+    @media (min-width: 640px) {
+      .text-mision-vision {
+        text-justify: inter-character;
+      }
+    }
+  }
+}
