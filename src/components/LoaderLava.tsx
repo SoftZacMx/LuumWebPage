@@ -10,7 +10,7 @@ type LoaderLavaProps = {
 };
 
 const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
-  const timeAnimation = "2s";
+  const timeAnimation = "4s";
 
   return (
     <div
@@ -21,10 +21,6 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
         @keyframes rotation {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
-        }
-        @keyframes roundness {
-          0%, 60%, 100% { filter: contrast(15); }
-          20%, 40% { filter: contrast(3); }
         }
         @keyframes colorize {
           0%, 100% { filter: hue-rotate(0deg); }
@@ -43,16 +39,6 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
           animation: colorize calc(${timeAnimation} * 3) ease-in-out infinite;
         }
 
-        /* Corregimos el filtro para que no corte los bordes */
-        .clipping-mask {
-          filter: contrast(15);
-          animation: roundness calc(${timeAnimation} / 2) linear infinite;
-        }
-
-        .clipping-mask polygon {
-          filter: blur(7px);
-        }
-
         .p1 { transform-origin: 75% 25%; transform: rotate(90deg); }
         .p2 { transform-origin: 50% 50%; animation: rotation ${timeAnimation} linear infinite reverse; }
         .p3 { transform-origin: 50% 60%; animation: rotation ${timeAnimation} linear infinite; animation-delay: calc(${timeAnimation} / -3); }
@@ -69,7 +55,7 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
       >
         
         {/* Fondo y bordes */}
-        <div className="absolute inset-0 rounded-full border-b border-t border-[var(--color-two)] border-t-[var(--color-one)] bg-gradient-to-b from-[var(--color-five)] to-[var(--color-four)] shadow-[inset_0_10px_10px_0_rgba(255,191,71,0.5),inset_0_-10px_10px_0_rgba(191,74,29,0.5)]" />
+        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-[var(--color-five)] to-[var(--color-four)] shadow-[inset_0_14px_24px_0_rgba(255,191,71,0.35),inset_0_-14px_24px_0_rgba(191,74,29,0.35)]" />
         
         {/* SVG único: gradient + mask + rect enmascarado en el mismo árbol SVG.
             Safari iOS ignora `mask: url(#id)` aplicado a un <div> vía CSS, así que
@@ -85,15 +71,43 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
               <stop offset="30%" stopColor="#ffbf48" />
               <stop offset="70%" stopColor="#be4a1d" />
             </linearGradient>
-            <mask id="clipping" className="clipping-mask">
+            {/* Filtro "liquid" SVG-nativo (compat Safari/iOS): blur amplio sobre los
+                polígonos + threshold MUY suave del alpha vía feColorMatrix. La idea
+                no es definir blobs nítidos (metaball) sino dejar pasar un degradado
+                difuso que solo insinúe el movimiento, como un líquido. El pulso del
+                antiguo `roundness` se preserva con SMIL pero entre valores bajos
+                (3 ↔ 2), de modo que los bordes nunca se endurecen. */}
+            <filter id="goo" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="blur" />
+              <feColorMatrix
+                in="blur"
+                type="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 -0.6"
+              >
+                <animate
+                  attributeName="values"
+                  dur="2s"
+                  repeatCount="indefinite"
+                  keyTimes="0;0.2;0.4;0.6;1"
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 -0.6;
+                          1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.5 -0.4;
+                          1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.5 -0.4;
+                          1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 -0.6;
+                          1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 -0.6"
+                />
+              </feColorMatrix>
+            </filter>
+            <mask id="clipping">
               <rect x="-10" y="-10" width="120" height="120" fill="black" />
-              <polygon className="p1" points="25,25 75,25 50,75" fill="white" />
-              <polygon className="p2" points="50,25 75,75 25,75" fill="white" />
-              <polygon className="p3" points="35,35 65,35 50,65" fill="white" />
-              <polygon className="p4" points="35,35 65,35 50,65" fill="white" />
-              <polygon className="p5" points="35,35 65,35 50,65" fill="white" />
-              <polygon className="p6" points="35,35 65,35 50,65" fill="white" />
-              <polygon className="p7" points="35,35 65,35 50,65" fill="white" />
+              <g filter="url(#goo)">
+                <polygon className="p1" points="25,25 75,25 50,75" fill="white" />
+                <polygon className="p2" points="50,25 75,75 25,75" fill="white" />
+                <polygon className="p3" points="35,35 65,35 50,65" fill="white" />
+                <polygon className="p4" points="35,35 65,35 50,65" fill="white" />
+                <polygon className="p5" points="35,35 65,35 50,65" fill="white" />
+                <polygon className="p6" points="35,35 65,35 50,65" fill="white" />
+                <polygon className="p7" points="35,35 65,35 50,65" fill="white" />
+              </g>
             </mask>
           </defs>
           <rect
