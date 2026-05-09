@@ -71,11 +71,21 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
         {/* Fondo y bordes */}
         <div className="absolute inset-0 rounded-full border-b border-t border-[var(--color-two)] border-t-[var(--color-one)] bg-gradient-to-b from-[var(--color-five)] to-[var(--color-four)] shadow-[inset_0_10px_10px_0_rgba(255,191,71,0.5),inset_0_-10px_10px_0_rgba(191,74,29,0.5)]" />
         
-        {/* SVG con dimensiones ligeramente mayores para evitar recortes de blur */}
-        <svg className="absolute left-0 top-0" width={sizePx} height={sizePx} viewBox="0 0 100 100">
+        {/* SVG único: gradient + mask + rect enmascarado en el mismo árbol SVG.
+            Safari iOS ignora `mask: url(#id)` aplicado a un <div> vía CSS, así que
+            usamos `mask="url(#id)"` como atributo SVG sobre el <rect>. */}
+        <svg
+          className="absolute left-0 top-0"
+          width={sizePx}
+          height={sizePx}
+          viewBox="0 0 100 100"
+        >
           <defs>
+            <linearGradient id="lavaGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="30%" stopColor="#ffbf48" />
+              <stop offset="70%" stopColor="#be4a1d" />
+            </linearGradient>
             <mask id="clipping" className="clipping-mask">
-              {/* Expandimos el fondo del mask para cubrir todo el contenedor */}
               <rect x="-10" y="-10" width="120" height="120" fill="black" />
               <polygon className="p1" points="25,25 75,25 50,75" fill="white" />
               <polygon className="p2" points="50,25 75,75 25,75" fill="white" />
@@ -86,16 +96,13 @@ const LoaderLava = ({ sizePx = 100, opacity = 1 }: LoaderLavaProps) => {
               <polygon className="p7" points="35,35 65,35 50,65" fill="white" />
             </mask>
           </defs>
+          <rect
+            width="100"
+            height="100"
+            fill="url(#lavaGradient)"
+            mask="url(#clipping)"
+          />
         </svg>
-
-        
-        <div 
-          className="h-full w-full bg-gradient-to-b from-[#ffbf48] from-[30%] to-[#be4a1d] to-[70%]"
-          style={{ 
-            mask: 'url(#clipping)', 
-            WebkitMask: 'url(#clipping)'
-          }}
-        />
       </div>
     </div>
   );
