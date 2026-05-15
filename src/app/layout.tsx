@@ -16,9 +16,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Luum — Digital Studio",
+  title: "Luum",
   description:
-    "Luxury digital craftsmanship. Custom software, SaaS, and platforms with enduring quality.",
+    "Digital craftsmanship for complex systems. Custom software and high-end software engineering built with absolute precision.",
+    
   icons: {
     icon: "/favicon.ico",
   },
