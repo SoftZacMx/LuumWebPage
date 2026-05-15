@@ -1,13 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
 import { MotionSection } from "./MotionSection";
-import { boutiqueTransition, boutiqueViewport } from "@/lib/motion-boutique";
 
 export function About() {
-  const reduce = useReducedMotion();
-
   return (
     <MotionSection
       id="about"
