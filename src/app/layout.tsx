@@ -21,7 +21,9 @@ export const metadata: Metadata = {
     "Digital craftsmanship for complex systems. Custom software and high-end software engineering built with absolute precision.",
     
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.png", // Asegúrate de que el archivo se llame icon.png en tu carpeta app
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
