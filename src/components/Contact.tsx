@@ -12,26 +12,45 @@ export function Contact() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
-    
+    setState({});
+
+    const key = process.env.NEXT_PUBLIC_WEB3FORMS_KEY?.trim();
+    if (!key) {
+      setState({
+        error:
+          "Falta configurar NEXT_PUBLIC_WEB3FORMS_KEY en .env en la raíz del proyecto Next y reiniciar el servidor.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
-    
-    // Usaremos Web3Forms (requiere un token gratuito de https://web3forms.com/)
-    // Es perfecto para proyectos con estética minimalista
-    formData.append("access_key", "TU_TOKEN_AQUÍ"); 
+    formData.append("access_key", key);
+    formData.append("subject", "Nuevo mensaje desde el sitio Luum");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as {
+        success?: boolean;
+        message?: string | string[];
+      };
 
       if (data.success) {
         setState({ success: true });
         (e.target as HTMLFormElement).reset();
       } else {
-        setState({ error: "Hubo un error. Por favor, intenta de nuevo." });
+        const apiMsg = Array.isArray(data.message)
+          ? data.message.join(" ")
+          : typeof data.message === "string"
+            ? data.message
+            : null;
+        setState({
+          error: apiMsg ?? "Hubo un error. Por favor, intenta de nuevo.",
+        });
       }
     } catch {
       setState({ error: "Error de conexión." });
