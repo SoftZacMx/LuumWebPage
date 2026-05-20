@@ -21,6 +21,7 @@ export function ProjectGallery() {
       description: "Migración sin servidor de un sistema de gestión de restaurantes a AWS. Incluye pagos con Stripe, WebSockets y arquitectura orientada a eventos.",
       link: "https://restify-qa.up.railway.app/auth/login",
       access: { user: "admin@restify.com", pass: "Restify123!" }
+      
     },
    
   ];
