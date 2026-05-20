@@ -5,22 +5,7 @@ import Link from "next/link";
 
 export function ProjectGallery() {
   const projects = [
-    { 
-      id: "SIDGDEP", 
-      title: "SIDGDEP", 
-      tag: " Gestión Deportiva",
-      description: "Sistema integral para academias y gimnasios. Automatiza membresías, pagos, inventarios y comisiones de instructores en una plataforma unificada.",
-      link: "https://academies-demo-frontned.onrender.com/auth/login",
-      access: { user: "admin@gmail.com", pass: "adminadmin" }
-    },
-    { 
-      id: "SIDGDER", 
-      title: "SIDGDER", 
-      tag: "Sector Restaurantero",
-      description: "Sistema web integral desarrollado para gestionar las operaciones de un restaurante, incluyendo ventas, inventario, menús digitales con códigos QR, nómina e informes financieros.",
-      link: "https://sdigder-frontend-example.onrender.com/",
-      access: { user: "admin@gmail.com", pass: "adminadmin" }
-    },
+    
     { 
       id: "NeuroFile", 
       title: "NeuroFile", 
@@ -37,14 +22,7 @@ export function ProjectGallery() {
       link: "https://restify-qa.up.railway.app/auth/login",
       access: { user: "admin@restify.com", pass: "Restify123!" }
     },
-    { 
-      id: "GYF", 
-      title: "GYF System", 
-      tag: "// Gestión Educativa",
-      description: "Sistema de gestión de documentos y estudiantes para instituciones educativas. Centraliza certificados, calificaciones y conexión entre padres y profesores.",
-      link: "https://gyfsystem-frontend-qa.up.railway.app/login",
-      access: { user: "admin@filesmanager.com", pass: "password123" }
-    },
+   
   ];
 
   return (
