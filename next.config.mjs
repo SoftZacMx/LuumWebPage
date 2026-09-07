@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Export estático: genera HTML/JS/CSS en la carpeta `out/` (sin servidor Node).
+  output: "export",
   images: {
+    // Requerido con `output: export`: desactiva la optimización on-demand de next/image.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
